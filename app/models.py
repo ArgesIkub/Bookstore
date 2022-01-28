@@ -34,6 +34,25 @@ class Author(models.Model):
 class Page(models.Model):
     number = models.PositiveIntegerField()
     book = models.ForeignKey(to=Book, on_delete=DO_NOTHING)
+    content = models.CharField(max_length=5000, blank=True, null=True)
 
     def __str__(self):
         return f'{self.book.title} - {self.number}'
+
+
+class Orders(models.Model):
+
+    ORDER_STATE = (
+        ('draft', 'Draft'),
+        ('approved', 'Approved'),
+        ('refused', 'Refused'),
+    )
+
+    description = models.CharField(max_length=32)
+    date_created = models.DateField(blank=True, null=True)
+    date_approved = models.DateField(blank=True, null=True)
+    date_refused = models.DateField(blank=True, null=True)
+    state = models.CharField(choices=ORDER_STATE, default='draft', max_length=32)
+
+    def __str__(self):
+        return self.description
